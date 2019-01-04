@@ -48,9 +48,10 @@ public class SimpleURLSource extends JFrame implements ActionListener
     {
         String urlString = textField.getText();
 
-        if(urlString == null)
+        if(urlString.equals("") || urlString.equals(null))
         {
-
+            textField.setText(null);
+            JOptionPane.showMessageDialog(new JFrame(), "Input an URL !!");
         }
         else
         {
@@ -74,7 +75,7 @@ public class SimpleURLSource extends JFrame implements ActionListener
             catch(Exception ex)
             {
                 textField.setText(null);
-                JOptionPane.showMessageDialog(new JFrame(), "Invalid URL");
+                JOptionPane.showMessageDialog(new JFrame(), "Invalid URL !!");
             }
         }
     }
