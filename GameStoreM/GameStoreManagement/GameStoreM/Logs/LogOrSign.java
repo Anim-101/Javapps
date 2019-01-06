@@ -38,7 +38,6 @@ public final class LogOrSign extends JFrame
 			l.setVisible(true);
 		});
 		
-		
 		sign.addActionListener (e->
 		{
 			UserSignUp u = new UserSignUp ();
