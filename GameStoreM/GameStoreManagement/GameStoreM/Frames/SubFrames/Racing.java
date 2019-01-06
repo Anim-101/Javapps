@@ -19,8 +19,10 @@ public final class Racing extends JFrame
 	public  Racing()
 	{
 		JTable actionTable = new JTable();
+		
 		//Fow Viewing Available games;
 		Vector data = new Vector ();
+		
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
