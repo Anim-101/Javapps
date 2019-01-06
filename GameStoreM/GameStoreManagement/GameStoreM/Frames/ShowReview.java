@@ -19,13 +19,13 @@ public final class ShowReview extends JFrame
 	public ShowReview ()
 	{
 		JTable actionTable = new JTable();
-		//Fow Viewing Available games;
+		
+		//Fow Viewing Available games
 		Vector data = new Vector ();
 		try
-		
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
+            		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
 			Statement stmt = con.createStatement();
 			String query = "SELECT * FROM REVIEW";
 			ResultSet rs = stmt.executeQuery(query);
@@ -37,36 +37,34 @@ public final class ShowReview extends JFrame
 				data.add(row);
 			}
 		}
-		
 		catch (Exception ex)
+		{
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(this,"No Review Avaiable !!");
+		}
+
+		Vector col = new Vector ();
+		col.add("Reviews are given by Gamers & System Users");
+		actionTable = new JTable(data,col);
+		JScrollPane pnl = new JScrollPane (actionTable);
+
+		this.getContentPane().add(pnl);
+		this.setLayout(new BoxLayout(this.getContentPane(),BoxLayout.X_AXIS));
+		this.setSize(500,500);
+		this.setVisible(true);
+
+		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e) 
 			{
-				ex.printStackTrace();
-				JOptionPane.showMessageDialog(this,"No Review Avaiable !!");
+				setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				Main lol = new Main ();
+				lol.setVisible(true);
 			}
-			
-			Vector col = new Vector ();
-			col.add("Reviews are given by Gamers & System Users");
-			actionTable = new JTable(data,col);
-			JScrollPane pnl = new JScrollPane (actionTable);
-			
-			this.getContentPane().add(pnl);
-			this.setLayout(new BoxLayout(this.getContentPane(),BoxLayout.X_AXIS));
-			this.setSize(500,500);
-			this.setVisible(true);
-			
-			addWindowListener(new WindowAdapter()
-			{
-				public void windowClosing(WindowEvent e) 
-				{
-					setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-					Main lol = new Main ();
-					lol.setVisible(true);
-				}
-			});
+		});
 	}
 	
 	public static void main (String [] args)
 	{
-		
 	}
 }
