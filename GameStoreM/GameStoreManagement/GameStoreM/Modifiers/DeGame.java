@@ -66,67 +66,66 @@ public final class DeGame extends JFrame implements ActionListener,ItemListener
 		});
 		
 		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent eos) 
 			{
-				public void windowClosing(WindowEvent eos) 
-				{
-					setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-					User lol = new User (e);
-					lol.setVisible(true);
-				}
-			});	
-		
-					
+				setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				User lol = new User (e);
+				lol.setVisible(true);
+			}
+		});						
 	}
 	
-		public void itemStateChanged( ItemEvent event )
-            {
-				if (event.getSource()==genBox)
-				{
-					if ( event.getStateChange() == ItemEvent.SELECTED )
-					{
-						x = String.valueOf(genBox.getSelectedItem());
-				    }
-				}
-            }
-		public void actionPerformed(ActionEvent z)
-			{
-				if (z.getSource ()== ok)
-				{	
-					System.out.println(e);
-					String gName= nameText.getText();
-					String gameName =gName.toUpperCase();
-			
-					if ( x != "Select")
-					{
-						try
-						{
-							int r=0;
-							String query = "DELETE FROM "+x+" WHERE game = '"+gameName+"' and mail = '"+e+"'";
-							Class.forName("com.mysql.jdbc.Driver");
-							Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
-							PreparedStatement ps = con.prepareStatement(query); 
-							r=ps.executeUpdate(query);
-			
-							if (r!=0)
-							{
-								JOptionPane.showMessageDialog(null,"Successfull");
-							}
-							else
-							{
-								JOptionPane.showMessageDialog(null,"Nothing Found");
-							}
-							con.close();
-						}
-						catch (Exception ex)
-						{
-							JOptionPane.showMessageDialog(null,"Some Error Occured");
-						}	 
-					}
-				}
-			}	
-			
-	
-		public static void main (String [] args)
+	public void itemStateChanged( ItemEvent event )
+	{
+		if (event.getSource()==genBox)
 		{
+			if ( event.getStateChange() == ItemEvent.SELECTED )
+			{
+				x = String.valueOf(genBox.getSelectedItem());
+		    	}
 		}
+    	}
+	
+	public void actionPerformed(ActionEvent z)
+	{
+		if (z.getSource ()== ok)
+		{	
+			System.out.println(e);
+			String gName= nameText.getText();
+			String gameName =gName.toUpperCase();
+
+			if ( x != "Select")
+			{
+				try
+				{
+					int r=0;
+					String query = "DELETE FROM "+x+" WHERE game = '"+gameName+"' and mail = '"+e+"'";
+					Class.forName("com.mysql.jdbc.Driver");
+					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
+					PreparedStatement ps = con.prepareStatement(query); 
+					r=ps.executeUpdate(query);
+
+					if (r!=0)
+					{
+						JOptionPane.showMessageDialog(null,"Successfull");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null,"Nothing Found");
+					}
+					
+					con.close();
+				}
+				catch (Exception ex)
+				{
+					JOptionPane.showMessageDialog(null,"Some Error Occured");
+				}	 
+			}
+		}
+	}	
+
+	public static void main (String [] args)
+	{
+	}
 }
