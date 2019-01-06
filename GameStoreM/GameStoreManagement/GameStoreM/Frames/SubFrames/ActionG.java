@@ -19,8 +19,10 @@ public final class ActionG extends JFrame
 	public ActionG ()
 	{
 		JTable actionTable = new JTable();
+		
 		//Fow Viewing Available games;
 		Vector data = new Vector ();
+		
 		try
 		{	
 			Class.forName("com.mysql.jdbc.Driver");
