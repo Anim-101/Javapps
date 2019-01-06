@@ -7,7 +7,6 @@ import GameStoreM.Frames.SubFrames.*;
 import GameStoreM.Frames.BridgeFrames.*;;
 //Packeging stops here;
 
-
 import java.awt.*;
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +17,8 @@ import java.util.*;
 public class User extends JFrame 
 {	public String email;
 	public User (String y)
-	{	this.email=y;
+	{	
+		this.email=y;
 		JPanel one = new JPanel ();
 		JPanel two = new JPanel ();
 		JPanel three = new JPanel ();
@@ -52,15 +52,12 @@ public class User extends JFrame
 		subOne2.add(subOne2p,BorderLayout.NORTH);
 		subOne2.add(centerLabel,BorderLayout.CENTER);
 		
-		
 		//Finally Full Layout Configuration of First Panel !!
 		one.setLayout(new BorderLayout());
 		one.add(subOne,BorderLayout.NORTH);
 		one.add(subOne2,BorderLayout.CENTER);
-	
 		
 		//Configuration of button Panle for Sub Panel for Buttons of Second Panel;
-			
 		JPanel option1 = new JPanel ();
 		JButton select = new JButton ("Select");
 		JButton save = new JButton("Save");
@@ -76,30 +73,14 @@ public class User extends JFrame
 		
 		//Configuration of Second Panel;
 		two.setLayout(new BorderLayout());
-		two.add(option,BorderLayout.SOUTH);
-		
-				
-		
-		//Configuring Thrid Panel;
-		/*Object rowData[][] ={ {"Row1-Column1","Row1-Coloumn2","Row1-Column3"},
-							{"Row2-Column1","Row2-Coloumn2","Row2-Column3"},
-		{"Row3-Column1","Row3-Coloumn2","Row3-Column3"}};
-		
-		Object columnNames [] = { "Column-One","Column-Two","Column-Three"};
-		JTable table = new JTable (rowData,columnNames);
-		JScrollPane scroll = new JScrollPane (table);
-		three.setLayout(new BorderLayout());
-		three.add(scroll,BorderLayout.CENTER);
-		*/
-		
+		two.add(option,BorderLayout.SOUTH);		
+			
 		//Fourth Panel Configuration ^+^
-		//JButton change = new JButton("Change");
 		JButton exit = new JButton ("Exit");
 		JButton logout = new JButton ("Log out");
 		JLabel middle = new JLabel ("Gaming is Fun !",JLabel.CENTER);
 		JPanel subFour = new JPanel ();
 		subFour.setLayout(new FlowLayout());
-		//subFour.add(change);
 		subFour.add(exit);
 		subFour.add(logout);
 		four.setLayout(new BorderLayout());
@@ -108,8 +89,6 @@ public class User extends JFrame
 		
 		
 		this.add(one);
-		//this.add(two);
-		//this.add(three);
 		this.add(four);
 		this.setLayout(new GridLayout(2,2));
 		this.setSize(500,500);
@@ -118,65 +97,56 @@ public class User extends JFrame
 		add.addActionListener(e->
 		{
 			AddGames a = new AddGames (email);
-				a.setVisible(true);
-				setVisible(false);
-				
+			a.setVisible(true);
+			setVisible(false);				
 		});
 		
 		update.addActionListener(e->
 		{
-				UpdateGames up = new UpdateGames(email);
-				up.setVisible(true);
-				setVisible(false);
+			UpdateGames up = new UpdateGames(email);
+			up.setVisible(true);
+			setVisible(false);
 		});
 		
 		search.addActionListener (e->
 		{				
 					
-				String u1=searchText.getText();
-				String u = u1.toUpperCase();
-				try
-				{	
-						int l=0;
-						String query [] ={"SELECT game FROM  ACTION WHERE game = ? and mail = ?",
-							 "SELECT game FROM  ADVENTURE WHERE game =? and mail = ?",
-							 "SELECT game FROM  RACING WHERE game =? and mail = ?",
-							 "SELECT game FROM  RPG WHERE game =? and mail =?",
-							 "SELECT game FROM  STEALTH WHERE game =? and mail =?",
-							"SELECT game FROM  STRATEGY WHERE game =? and mail =?"};
+			String u1=searchText.getText();
+			String u = u1.toUpperCase();
+			try
+			{	
+				int l=0;
+				String query [] ={"SELECT game FROM  ACTION WHERE game = ? and mail = ?",
+					 "SELECT game FROM  ADVENTURE WHERE game =? and mail = ?",
+					 "SELECT game FROM  RACING WHERE game =? and mail = ?",
+					 "SELECT game FROM  RPG WHERE game =? and mail =?",
+					 "SELECT game FROM  STEALTH WHERE game =? and mail =?",
+					"SELECT game FROM  STRATEGY WHERE game =? and mail =?"};
 
-						Class.forName("com.mysql.jdbc.Driver");
-						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
-						PreparedStatement ps;
-						ResultSet rs;
-				
-						for (String q : query)
-						{
-							ps = con.prepareStatement(q);  
-							ps.setString(1,u);
-							ps.setString(2,email);
-							rs=ps.executeQuery();
-							if ( rs.next() == true)
-							{
-								JOptionPane.showMessageDialog(null, "Available");
-								break;			
-							}
-						}
-							
-							/*if (rs.next() != true)
-							{
-								JOptionPane.showMessageDialog(null, "Not Available");								
-							}*/
-							con.close();
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
+				PreparedStatement ps;
+				ResultSet rs;
+
+				for (String q : query)
+				{
+					ps = con.prepareStatement(q);  
+					ps.setString(1,u);
+					ps.setString(2,email);
+					rs=ps.executeQuery();
+					if ( rs.next() == true)
+					{
+						JOptionPane.showMessageDialog(null, "Available");
+						break;			
+					}
 				}
-			
+						
+				con.close();
+				}
 				catch (Exception ex)
-						{
-							JOptionPane.showMessageDialog(null, "Some Error Occured");		
-						}
-			
-			
-				
+				{
+					JOptionPane.showMessageDialog(null, "Some Error Occured");		
+				}				
 		});
 		
 		delete.addActionListener(e->
@@ -201,30 +171,13 @@ public class User extends JFrame
 				}
 			});
 		
-		/*change.addActionListener(e->
-		{
-				
-		});*/
-		
 		logout.addActionListener(e->
 		{
 			new LogOrSign ();
 			setVisible(false);				
 		});
 		
-		/*select.addActionListener(e->
-		{
-				
-		});
-		
-		save.addActionListener(e->
-		{
-			
-		});*/
-	}
-	
 	public static void main (String [] args)
 	{
-		
 	}	
 }
