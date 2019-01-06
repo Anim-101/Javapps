@@ -86,8 +86,7 @@ public final class CustomerInterface extends JFrame
 				Buy bu =new Buy ();
 				bu.setVisible(true);	
 				setVisible(false);
-			}
-		
+			}		
 		});
 		
 		exit.addActionListener (new ActionListener ()
@@ -97,9 +96,7 @@ public final class CustomerInterface extends JFrame
 				dispose();
 				Main lol = new Main ();
 				lol.setVisible (true);
-			
 			}
-		
 		});
 		
 		addWindowListener(new WindowAdapter()
