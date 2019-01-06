@@ -19,8 +19,10 @@ public final class Adventure extends JFrame
 	public  Adventure ()
 	{
 		JTable actionTable = new JTable();
+		
 		//Fow Viewing Available games;
 		Vector data = new Vector ();
+		
 		try		
 		{
 			Class.forName("com.mysql.jdbc.Driver");
