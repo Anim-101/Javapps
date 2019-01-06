@@ -5,6 +5,7 @@ import GameStoreM.Logs.*;
 import GameStoreM.Modifiers.*;
 import GameStoreM.Frames.SubFrames.*;
 import GameStoreM.Frames.BridgeFrames.*;
+
 //Packaging is done
 import java.awt.event.*;
 import java.awt.*;
@@ -103,9 +104,7 @@ public class UpdateGames extends JFrame implements ActionListener,ItemListener
 					User lol = new User (em);
 					lol.setVisible(true);
 				}
-			});
-		
-					
+			});					
 	}
 	
 	public void itemStateChanged( ItemEvent event )
@@ -118,6 +117,7 @@ public class UpdateGames extends JFrame implements ActionListener,ItemListener
 				    }
 				}
             }
+	    
 	public void actionPerformed(ActionEvent z)
 			{
 				if (z.getSource ()== ok)
@@ -155,7 +155,6 @@ public class UpdateGames extends JFrame implements ActionListener,ItemListener
 						}	 
 					}
 				}
-		
 	}
 	
 	public static void main (String [] args)
