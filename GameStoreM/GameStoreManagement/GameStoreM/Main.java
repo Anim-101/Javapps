@@ -5,7 +5,6 @@ import GameStoreM.Logs.*;
 import GameStoreM.Modifiers.*;
 import GameStoreM.Frames.SubFrames.*;
 import GameStoreM.Frames.BridgeFrames.*;
-
 //Packeging is done here !!
 
 import java.awt.*;
@@ -75,6 +74,5 @@ public final class Main extends JFrame
 	public static void main (String [] args)
 	{
 		new Main ();
-	}
-	
+	}	
 }
