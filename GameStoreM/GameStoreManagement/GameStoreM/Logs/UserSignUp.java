@@ -5,14 +5,13 @@ import GameStoreM.Logs.*;
 import GameStoreM.Modifiers.*;
 import GameStoreM.Frames.SubFrames.*;
 import GameStoreM.Frames.BridgeFrames.*;
+
 //Packeging is done here;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.sql.*;
-
-
 
 public final class UserSignUp extends JFrame 
 {
@@ -56,9 +55,7 @@ public final class UserSignUp extends JFrame
 		upper1.add(passText);
 		upper1.setLayout(layout);
 		
-		
 		//For Name and Textfield of Name;
-		
 		layout.putConstraint(SpringLayout.WEST, name, 10, SpringLayout.WEST, upper1);
 		layout.putConstraint(SpringLayout.NORTH, name, 25, SpringLayout.NORTH, upper1);
 		layout.putConstraint(SpringLayout.NORTH, nameText, 25, SpringLayout.NORTH, upper1);
@@ -66,7 +63,6 @@ public final class UserSignUp extends JFrame
 
 		
 		//For Store Name and It's TextField;
-		
 		layout.putConstraint(SpringLayout.WEST, storeName, 10, SpringLayout.WEST, upper1);
 		layout.putConstraint(SpringLayout.NORTH, storeName, 45, SpringLayout.NORTH, upper1);
 		layout.putConstraint(SpringLayout.NORTH, storeNameText, 45, SpringLayout.NORTH, upper1);
@@ -79,14 +75,11 @@ public final class UserSignUp extends JFrame
 		layout.putConstraint(SpringLayout.WEST, emailText, 54, SpringLayout.EAST, email);
 
 		//For Password and it's TextField;
-		
 		layout.putConstraint(SpringLayout.WEST, pass, 10, SpringLayout.WEST, upper1);
 		layout.putConstraint(SpringLayout.NORTH, pass, 85, SpringLayout.NORTH, upper1);
 		layout.putConstraint(SpringLayout.NORTH, passText, 85, SpringLayout.NORTH, upper1);
 		layout.putConstraint(SpringLayout.WEST, passText, 27, SpringLayout.EAST, pass);
 
-
-		
 		//Configuring Okay Button;
 		JPanel but = new JPanel();
 		JButton ok = new JButton("Okay");
@@ -102,7 +95,6 @@ public final class UserSignUp extends JFrame
 		this.setLayout(new GridLayout(2,1));
 		this.setVisible(true);
 		
-		
 		ok.addActionListener (e->
 		{
 			String uName=nameText.getText();
@@ -116,7 +108,6 @@ public final class UserSignUp extends JFrame
 				Class.forName("com.mysql.jdbc.Driver");
 				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
 				
-				
 				PreparedStatement ps = con.prepareStatement(query);                    
 				ps.setString(1,uName);
 				ps.setString(2,uStore);
@@ -124,17 +115,13 @@ public final class UserSignUp extends JFrame
 				ps.setString(4,uPass);
 				ps.executeUpdate();
 				
-				
-				
 				con.close();
 			}
-			
 			catch (Exception ex)
 			{
 				JOptionPane.showMessageDialog(null,"Some Error Ocurred");
 			}
 		});
-		
 		
 	addWindowListener(new WindowAdapter()
 			{
