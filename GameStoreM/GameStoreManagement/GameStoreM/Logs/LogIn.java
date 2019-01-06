@@ -26,7 +26,6 @@ public final class LogIn extends JFrame
 		mailText = new JTextField (15);
 		mailText.setBounds (110,50,90,25);
 		
-		
 		passLabel = new JLabel ("Password :");
 		passLabel.setBounds(30,90,90,25);
 		
@@ -51,13 +50,13 @@ public final class LogIn extends JFrame
 			String password = passText.getText();
 			
 			try
-			{
-				
+			{				
 				String query ="SELECT * FROM  STOREM WHERE mail = '"+email+"' and pass ='"+password+"'";
 				Class.forName("com.mysql.jdbc.Driver");
 				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");	
 				PreparedStatement ps = con.prepareStatement(query);
 				ResultSet rs = ps.executeQuery (query);
+				
 				if(rs.next()==true)
 				{
 					this.dispose ();
@@ -71,23 +70,20 @@ public final class LogIn extends JFrame
 			}
 			
 			catch (Exception ex)
-			
 			{	ex.printStackTrace();
 				JOptionPane.showMessageDialog(null,"Some Error Occured");
 			}
-			
 		});
 		
-	addWindowListener(new WindowAdapter()
+		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e) 
 			{
-				public void windowClosing(WindowEvent e) 
-				{
-					setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-					Main lol = new Main();
-					lol.setVisible(true);
-				}
-			});
-		
+				setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				Main lol = new Main();
+				lol.setVisible(true);
+			}
+		});
 	}
 	
 	public static void main (String [] args)
