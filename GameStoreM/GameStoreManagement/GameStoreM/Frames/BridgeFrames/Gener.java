@@ -46,67 +46,63 @@ public final class Gener extends JFrame
 		this.setVisible (true);
 				
 		action.addActionListener (e->
-			{
-				ActionG ac = new ActionG ();
-				ac.setVisible(true);
-				this.setVisible(false);
-			});
+		{
+			ActionG ac = new ActionG ();
+			ac.setVisible(true);
+			this.setVisible(false);
+		});
 			
 		adventure.addActionListener (e->
-			{	
-				Adventure ad=new Adventure ();
-				ad.setVisible(true);
-				this.setVisible(false);
-			});
+		{	
+			Adventure ad=new Adventure ();
+			ad.setVisible(true);
+			this.setVisible(false);
+		});
 		
 		rpg.addActionListener (e->
-			{
-				Rpg rp =new Rpg ();
-				rp.setVisible(true);
-				this.setVisible(false);
-			});
+		{
+			Rpg rp =new Rpg ();
+			rp.setVisible(true);
+			this.setVisible(false);
+		});
 
 		racing.addActionListener (e->		
-			{
-				Racing rc =new Racing ();
-				rc.setVisible(true);
-				this.setVisible(false);
-			});
+		{
+			Racing rc =new Racing ();
+			rc.setVisible(true);
+			this.setVisible(false);
+		});
 			
 		strategy.addActionListener (e->
-			{
-				Strategy st =new Strategy ();
-				st.setVisible(true);
-				this.setVisible(false);
-			});
+		{
+			Strategy st =new Strategy ();
+			st.setVisible(true);
+			this.setVisible(false);
+		});
 				
 		stealth.addActionListener (e->
-		
-			{
-				Stealth steal =new Stealth ();
-				steal.setVisible(true);
-				this.setVisible(false);
-			});
-			
-				
+		{
+			Stealth steal =new Stealth ();
+			steal.setVisible(true);
+			this.setVisible(false);
+		});
+					
 		back.addActionListener (e->
-		
-			{
-				this.dispose ();
-				CustomerInterface lol = new CustomerInterface ();
-				lol.setVisible(true);
-				
-			});
+		{
+			this.dispose ();
+			CustomerInterface lol = new CustomerInterface ();
+			lol.setVisible(true);		
+		});
 			
 		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e) 
 			{
-				public void windowClosing(WindowEvent e) 
-				{
-					setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-					CustomerInterface lol = new CustomerInterface ();
-					lol.setVisible(true);
-				}
-			});
+				setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				CustomerInterface lol = new CustomerInterface ();
+				lol.setVisible(true);
+			}
+		});
 	}
 	
 	public static void main (String [] args)
