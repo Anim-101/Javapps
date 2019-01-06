@@ -5,8 +5,8 @@ import GameStoreM.Logs.*;
 import GameStoreM.Modifiers.*;
 import GameStoreM.Frames.SubFrames.*;
 import GameStoreM.Frames.BridgeFrames.*;
-
 //Packeging is done here;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.*;
@@ -25,13 +25,10 @@ public final class UserSignUp extends JFrame
 		JPanel upper1 = new JPanel ();
 		SpringLayout layout = new SpringLayout ();
 		upper.add(upper1,BorderLayout.CENTER);
-		
-		
 			
 		//Constructing Form;
 		JLabel name = new JLabel ("Name");
 		JTextField nameText = new JTextField(12);
-		
 		
 		JLabel storeName = new JLabel ("Store Name");
 		JTextField storeNameText = new JTextField(12);
@@ -42,9 +39,7 @@ public final class UserSignUp extends JFrame
 		JLabel pass = new JLabel ("PassWord");
 		JTextField passText = new JTextField(12);
 		
-		//Constructing Spring Layout to visualate Form;
-		
-		
+		//Constructing Spring Layout to visualate Form;		
 		upper1.add(name);
 		upper1.add(nameText);
 		upper1.add(storeName);
@@ -123,19 +118,18 @@ public final class UserSignUp extends JFrame
 			}
 		});
 		
-	addWindowListener(new WindowAdapter()
+		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e) 
 			{
-				public void windowClosing(WindowEvent e) 
-				{
-					setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-					LogOrSign lol = new LogOrSign();
-					lol.setVisible(true);
-				}
-			});
+				setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				LogOrSign lol = new LogOrSign();
+				lol.setVisible(true);
+			}
+		});
 	}
 	
 	public static void main (String [] args)
 	{
-		
 	}
 }
