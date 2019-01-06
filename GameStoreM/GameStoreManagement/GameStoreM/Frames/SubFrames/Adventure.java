@@ -21,11 +21,10 @@ public final class Adventure extends JFrame
 		JTable actionTable = new JTable();
 		//Fow Viewing Available games;
 		Vector data = new Vector ();
-		try
-		
+		try		
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
+            		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
 			Statement stmt = con.createStatement();
 			String query = "SELECT * FROM ADVENTURE";
 			ResultSet rs = stmt.executeQuery(query);
@@ -41,32 +40,31 @@ public final class Adventure extends JFrame
 		}
 		
 		catch (Exception ex)
-			{
-				JOptionPane.showMessageDialog(this,"Not Games Found");
-			}
+		{
+			JOptionPane.showMessageDialog(this,"Not Games Found");
+		}
 			
-			Vector col = new Vector ();
-			col.add("ADVENTURE");
-			col.add("Copy");
-			col.add("Price per Copy");
-			actionTable = new JTable(data,col);
-			JScrollPane pnl = new JScrollPane (actionTable);
-			
-			this.getContentPane().add(pnl);
-			this.setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
-			this.setSize(400,400);
-			this.setVisible(true);
+		Vector col = new Vector ();
+		col.add("ADVENTURE");
+		col.add("Copy");
+		col.add("Price per Copy");
+		actionTable = new JTable(data,col);
+		JScrollPane pnl = new JScrollPane (actionTable);
+
+		this.getContentPane().add(pnl);
+		this.setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
+		this.setSize(400,400);
+		this.setVisible(true);
 			
 		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e) 
 			{
-				public void windowClosing(WindowEvent e) 
-				{
-					setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-					Gener lol = new Gener ();
-					lol.setVisible(true);
-				}
-			});
-			
+				setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				Gener lol = new Gener ();
+				lol.setVisible(true);
+			}
+		});	
 	}
 	
 	public static void main (String [] args)
