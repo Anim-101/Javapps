@@ -5,8 +5,8 @@ import GameStoreM.Logs.*;
 import GameStoreM.Modifiers.*;
 import GameStoreM.Frames.SubFrames.*;
 import GameStoreM.Frames.BridgeFrames.*;
-
 //Packaging is done
+
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
@@ -62,7 +62,6 @@ public class UpdateGames extends JFrame implements ActionListener,ItemListener
 		priceText.setBounds(100,205,110,20);
 		priceText.addActionListener(this);
 		
-		
 		this.ok = new JButton ("Update");
 		ok.setBounds (185,300,75,20);
 		ok.addActionListener(this);
@@ -82,7 +81,6 @@ public class UpdateGames extends JFrame implements ActionListener,ItemListener
 		this.add(copText);
 		this.add(price);
 		this.add(priceText);
-		//this.add(pricePerText);
 		this.add(ok);
 		this.add(exit);
 		this.setSize(400,400);
@@ -97,64 +95,67 @@ public class UpdateGames extends JFrame implements ActionListener,ItemListener
 		});
 		
 		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e) 
 			{
-				public void windowClosing(WindowEvent e) 
-				{
-					setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-					User lol = new User (em);
-					lol.setVisible(true);
-				}
-			});					
+				setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				User lol = new User (em);
+				lol.setVisible(true);
+			}
+		});					
 	}
 	
 	public void itemStateChanged( ItemEvent event )
-            {
-				if (event.getSource()==genBox)
-				{
-					if ( event.getStateChange() == ItemEvent.SELECTED )
-					{
-						x = String.valueOf(genBox.getSelectedItem());
-				    }
-				}
-            }
+    	{
+		if (event.getSource()==genBox)
+		{
+			if ( event.getStateChange() == ItemEvent.SELECTED )
+			{
+				x = String.valueOf(genBox.getSelectedItem());
+		    }
+		}
+      	}
 	    
 	public void actionPerformed(ActionEvent z)
+	{
+		if (z.getSource ()== ok)
+		{	
+			String o = oldNameText.getText();
+			String oldGameName= o.toUpperCase ();
+			String g =nameText.getText();
+			String gName = g.toUpperCase();
+			Integer cp = Integer.parseInt(copText.getText());
+			Integer pr = Integer.parseInt(priceText.getText());
+
+			if ( x != "Select")
 			{
-				if (z.getSource ()== ok)
+				try
 				{	
-					String o = oldNameText.getText();
-					String oldGameName= o.toUpperCase ();
-					String g =nameText.getText();
-					String gName = g.toUpperCase();
-					Integer cp = Integer.parseInt(copText.getText());
-					Integer pr = Integer.parseInt(priceText.getText());
+					int l=0;
+					String query = "UPDATE "+x+" SET game ='"+gName+"',price ="+pr+",copy ="+cp+",mail= '"+em+"' WHERE game ='"+oldGameName+"' and mail = '"+em+"'";
+					Class.forName("com.mysql.jdbc.Driver");
+					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
+					PreparedStatement ps = con.prepareStatement(query); 
+					l=ps.executeUpdate(query);
 					
-					if ( x != "Select")
+					if (l !=0)
+
 					{
-						try
-						{	int l=0;
-							String query = "UPDATE "+x+" SET game ='"+gName+"',price ="+pr+",copy ="+cp+",mail= '"+em+"' WHERE game ='"+oldGameName+"' and mail = '"+em+"'";
-							Class.forName("com.mysql.jdbc.Driver");
-							Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
-						    PreparedStatement ps = con.prepareStatement(query); 
-							l=ps.executeUpdate(query);
-							if (l !=0)
-							
-							{
-								JOptionPane.showMessageDialog(null,"Done");
-							}
-							if (l==0)
-							{
-								JOptionPane.showMessageDialog(null,"Nothing Found");
-							}
-							
-							con.close();
-						}
-						catch (Exception ex)
-						{
-						}	 
+						JOptionPane.showMessageDialog(null,"Done");
 					}
+					
+					if (l==0)
+					{
+						JOptionPane.showMessageDialog(null,"Nothing Found");
+					}
+
+					con.close();
 				}
+				catch (Exception ex)
+				{
+				}	 
+			}
+		}
 	}
 	
 	public static void main (String [] args)
