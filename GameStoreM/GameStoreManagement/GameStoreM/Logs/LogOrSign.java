@@ -46,18 +46,17 @@ public final class LogOrSign extends JFrame
 		});
 		
 		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e) 
 			{
-				public void windowClosing(WindowEvent e) 
-				{
-					setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-					Main lol = new Main();
-					lol.setVisible(true);
-				}
-			});
+				setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				Main lol = new Main();
+				lol.setVisible(true);
+			}
+		});
 	}
 	
 	public static void main (String [] args)
 	{
-		
 	}
 }
