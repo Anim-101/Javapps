@@ -16,7 +16,6 @@ import java.io.*;
 
 public final class CustomerInterface extends JFrame
 {
-	
 	public CustomerInterface ()
 	{
 		JPanel panel = new JPanel ();
@@ -49,7 +48,6 @@ public final class CustomerInterface extends JFrame
 		JButton buy = new JButton ("Buy");
 		four.add(buy);
 		four.setLayout(new FlowLayout());
-	
 				
 		panel.add(one);
 		panel.add(two);
@@ -59,17 +57,15 @@ public final class CustomerInterface extends JFrame
 		this.add(panel);
 		this.setSize(450,250);
 		this.setVisible(true);
-		
-		
-		
+				
 		game.addActionListener (new ActionListener ()
 		{
-				public void actionPerformed (ActionEvent e)
-				{
-					Gener g =new Gener ();
-					g.setVisible(true);
-					setVisible(false);				
-				}		
+			public void actionPerformed (ActionEvent e)
+			{
+				Gener g =new Gener ();
+				g.setVisible(true);
+				setVisible(false);				
+			}		
 		});
 		
 		review.addActionListener (new ActionListener ()
@@ -94,7 +90,6 @@ public final class CustomerInterface extends JFrame
 		
 		});
 		
-		
 		exit.addActionListener (new ActionListener ()
 		{
 			public void actionPerformed (ActionEvent e)
@@ -107,7 +102,6 @@ public final class CustomerInterface extends JFrame
 		
 		});
 		
-		
 		addWindowListener(new WindowAdapter()
 			{
 				public void windowClosing(WindowEvent e) 
@@ -119,60 +113,54 @@ public final class CustomerInterface extends JFrame
 			});
 	
 	    searching.addActionListener (new ActionListener ()
+		{
+			public void actionPerformed (ActionEvent e)
 			{
-				public void actionPerformed (ActionEvent e)
-				{
-						String u1=doSearch.getText();
-						String u = u1.toUpperCase();
-	
-					try
-						{	
-							int l=0;
-							String query [] ={"SELECT game FROM  ACTION WHERE game =?",
-								 "SELECT game FROM  ADVENTURE WHERE game =?",
-								 "SELECT game FROM  RACING WHERE game =?",
-								 "SELECT game FROM  RPG WHERE game =?",
-								 "SELECT game FROM  STEALTH WHERE game =?",
-								 "SELECT game FROM  STRATEGY WHERE game =?"};
-				
-							Class.forName("com.mysql.jdbc.Driver");
-							Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
-							PreparedStatement ps;
-							ResultSet rs;
-				
-							for (String q : query)
+				String u1=doSearch.getText();
+				String u = u1.toUpperCase();
+
+				try
+				{	
+					int l=0;
+					String query [] ={"SELECT game FROM  ACTION WHERE game =?",
+						 "SELECT game FROM  ADVENTURE WHERE game =?",
+						 "SELECT game FROM  RACING WHERE game =?",
+						 "SELECT game FROM  RPG WHERE game =?",
+						 "SELECT game FROM  STEALTH WHERE game =?",
+						 "SELECT game FROM  STRATEGY WHERE game =?"};
+
+					Class.forName("com.mysql.jdbc.Driver");
+					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
+					PreparedStatement ps;
+					ResultSet rs;
+
+					for (String q : query)
+					{
+						ps = con.prepareStatement(q);                    
+						ps.setString(1,u);	
+						rs=ps.executeQuery();
+						if(rs.next() == true)
 							{
+								JOptionPane.showMessageDialog(null, "Available");
+								break;	
+							}
+							l++;
+					}
+
+					if (l >=6)
+					{
+						JOptionPane.showMessageDialog(null, "Not Available");								
+					}
 					
-								ps = con.prepareStatement(q);                    
-								ps.setString(1,u);	
-								rs=ps.executeQuery();
-								if(rs.next() == true)
-									{
-										JOptionPane.showMessageDialog(null, "Available");
-										break;	
-										
-									}
-									l++;
-							}
-							
-							if (l >=6)
-							{
-								JOptionPane.showMessageDialog(null, "Not Available");								
-							}
-							con.close();
-						}
-			
-					catch (Exception ex)
-						{
-							JOptionPane.showMessageDialog(null, "Some Error Occured");		
-						}
-			
+					con.close();
 				}
-			});
-		
-		
+				catch (Exception ex)
+				{
+					JOptionPane.showMessageDialog(null, "Some Error Occured");		
+				}
+			}
+		});
 	}
-	
 	
 	public static void main (String [] args)
 	{
