@@ -6,6 +6,7 @@ import GameStoreM.Modifiers.*;
 import GameStoreM.Frames.SubFrames.*;
 import GameStoreM.Frames.BridgeFrames.*;
 //Packaging is done here
+
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
@@ -83,80 +84,80 @@ public final class Buy extends JFrame implements ActionListener,ItemListener
 			lol.setVisible(true);
 		});
 		
-		
 		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e) 
 			{
-				public void windowClosing(WindowEvent e) 
-				{
-					setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-					CustomerInterface lol = new CustomerInterface ();
-					lol.setVisible(true);
-				}
-			});
-					
+				setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				CustomerInterface lol = new CustomerInterface ();
+				lol.setVisible(true);
+			}
+		});			
 	}
 	
 	public void itemStateChanged( ItemEvent event )
-            {
-				if (event.getSource()==genBox)
-				{
-					if ( event.getStateChange() == ItemEvent.SELECTED )
-					{
-						this.x = String.valueOf(genBox.getSelectedItem());
-				    }
-				}
-            }
-	public void actionPerformed(ActionEvent e)
+    	{
+		if (event.getSource()==genBox)
+		{
+			if ( event.getStateChange() == ItemEvent.SELECTED )
 			{
-				if (e.getSource ()== ok)
+				this.x = String.valueOf(genBox.getSelectedItem());
+		    }
+		}
+   	 }
+	    
+	public void actionPerformed(ActionEvent e)
+	{
+		if (e.getSource ()== ok)
+		{
+			String g = nameText.getText();
+			String gName = g.toUpperCase();
+
+			if ( x != "Select")
+			{
+				try
 				{
-					String g = nameText.getText();
-					String gName = g.toUpperCase();
-			
-					if ( x != "Select")
+					String query = "SELECT * FROM "+x+" WHERE game =?";
+					Class.forName("com.mysql.jdbc.Driver");
+					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
+					PreparedStatement ps = con.prepareStatement(query);  
+					ps.setString(1,gName);
+					ResultSet rs =ps.executeQuery();
+
+					while (rs.next())
 					{
+						int copies = rs.getInt ("copy");
+						int prices = rs.getInt ("price");
+						Integer cp = Integer.parseInt(copText.getText());
+						int c = copies-cp;
 						
-						try
-						{
-							String query = "SELECT * FROM "+x+" WHERE game =?";
-							Class.forName("com.mysql.jdbc.Driver");
-							Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameStoreM", "root", "");
-							PreparedStatement ps = con.prepareStatement(query);  
-							ps.setString(1,gName);
-							ResultSet rs =ps.executeQuery();
-							
-							while (rs.next())
-							{
-								int copies = rs.getInt ("copy");
-								int prices = rs.getInt ("price");
-								Integer cp = Integer.parseInt(copText.getText());
-								int c = copies-cp;
-								if (c>=0)
-								{	String que= "UPDATE "+x+" SET copy = "+c+" WHERE game = '"+gName+"'";
-									ps = con.prepareStatement(que);  
-									ps.executeUpdate();
-									int money=prices*cp;
-									String pr = String.valueOf(money);
-									priceText.setText(pr);
-									JOptionPane.showMessageDialog(null,"Complete your Bill at Cash Machine");
-									break;
-								}
-								else
-								{
-									JOptionPane.showMessageDialog(null,"Games out of Stock");
-								}
-							}
-							con.close();
+						if (c>=0)
+						{	String que= "UPDATE "+x+" SET copy = "+c+" WHERE game = '"+gName+"'";
+							ps = con.prepareStatement(que);  
+							ps.executeUpdate();
+							int money=prices*cp;
+							String pr = String.valueOf(money);
+							priceText.setText(pr);
+							JOptionPane.showMessageDialog(null,"Complete your Bill at Cash Machine");
+							break;
 						}
-						catch (Exception ex)
+						else
 						{
-							ex.printStackTrace();
-							JOptionPane.showMessageDialog(null,"Transaction can't be done !");
-						}	 
+							JOptionPane.showMessageDialog(null,"Games out of Stock");
+						}
 					}
+					
+					con.close();
 				}
-		
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(null,"Transaction can't be done !");
+				}	 
+			}
+		}
 	}
+	
 	public static void main (String [] args)
 	{
 	}
