@@ -98,6 +98,7 @@ public class SimpleQuiz extends JFrame implements ActionListener {
             m[x] = current;
 
             x++;
+            
             current++;
 
             set();
