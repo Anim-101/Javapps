@@ -1,20 +1,25 @@
 package application;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.FlowPane;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.stage.FileChooser;
+import javafx.stage.WindowEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
@@ -22,6 +27,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyCodeCombination;
 
+import java.util.Optional;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,7 +39,7 @@ public class NotePad extends Application {
 	
 	String openFileLocation = "", saveFileLocation = "";
 	
-	int toggleNumber = 0;
+	int toggleNumber = 0, toggleAlertKey = 0;
 	
 	public void start(Stage primaryStage) throws Exception {
 		
@@ -304,7 +310,97 @@ public class NotePad extends Application {
 		
 		// --- Starts
 		
-		exitMenuItem.setOnAction(e-> System.exit(0));
+		exitMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+				
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				
+				alert.setTitle("Warning");
+				alert.setHeaderText("Choose an appropiate ....");
+				alert.setContentText("Select?");
+				
+				ButtonType saveButtonType = new ButtonType("Save");
+				ButtonType dontSaveButtonType = new ButtonType("Don't Save");
+				ButtonType closeButtonType = new ButtonType("Close");
+				
+				alert.getButtonTypes().setAll(saveButtonType, dontSaveButtonType, closeButtonType);
+				
+				Optional<ButtonType> buttonTypeResult = alert.showAndWait();
+				
+				if(buttonTypeResult.get() == saveButtonType) {
+					
+						if(saveFileLocation.equals("")) {
+							
+							if(textArea.getText().equals("") || textArea.getText().equals(null)) {
+								
+								Alert alertSave = new Alert(AlertType.ERROR);
+								
+								alertSave.setTitle("Empty File");
+								alertSave.setHeaderText(null);
+								alertSave.setContentText("Can't Save, It's an Empty File");
+								alertSave.showAndWait();
+							}
+							else {
+													
+								FileChooser fileChooser = new FileChooser();
+								
+								FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("txt files", "*.txt");
+							
+								fileChooser.getExtensionFilters().add(extension);
+								
+								File saveFile = fileChooser.showSaveDialog(primaryStage);
+								
+								saveFileLocation = saveFile.getPath();
+								
+								try {
+									
+									if(saveFile != null) {
+																		
+											PrintWriter writeFile = new PrintWriter(saveFile);
+											
+											writeFile.println(textArea.getText());
+											
+											writeFile.close();
+									}
+									
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}					
+						}
+						else {
+						
+							File file = new File(saveFileLocation);
+							
+							try {
+								
+								if(file != null) {
+																	
+										PrintWriter writeFile = new PrintWriter(file);
+										
+										writeFile.println(textArea.getText());
+									
+										writeFile.close();
+								}
+								
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							
+						}
+					}
+				else if(buttonTypeResult.get() == dontSaveButtonType) {
+					
+					Platform.exit();
+					
+					System.exit(0);
+				}
+				else if(buttonTypeResult.get() == closeButtonType) {
+					
+				}
+		}
+		});
 		
 		// --- Ends
 		
@@ -322,138 +418,83 @@ public class NotePad extends Application {
 			}
 		});
 		
-		// --- Ends
+		// --- Ends		
 		
-		// ** Default Event Handling
+		// -> Cut Text File
 		
-		KeyCombination keyCombinationCtrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+		// -- Starts
 		
-		KeyCombination keyCombinationCtrlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
-		
-		KeyCombination keyCombinationCtrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
-		
-		textArea.setOnKeyPressed(new EventHandler<KeyEvent> () {
+		cutMenuItem.setOnAction(new EventHandler<ActionEvent> () {
 			
-			public void handle(KeyEvent event) {
+			public void handle(ActionEvent event) {
 				
-				// -> CTRL + Z = Shortcut Key to Undo Text
-				
-				// --- Starts
-				
-				if(keyCombinationCtrlZ.match(event)) {
-					
-					textArea.undo();
-				}
-				
-				// --- Ends
-				
-				// -> CTRL + Y = Shortcut Key to Redo Text
-				
-				// --- Starts
-				
-				if(keyCombinationCtrlY.match(event)) {
-									
-					textArea.redo();
-				}
-				
-				// --- Ends
-				
-				// -> CTRL + S = Shortcut Key to Save Text
-				
-				// --- Starts
-				
-				if(keyCombinationCtrlS.match(event)) {
-					
-					if(saveFileLocation == "") {
-						
-						if(textArea.getText().equals("") || textArea.getText().equals(null)) {
-							
-							Alert alert = new Alert(AlertType.ERROR);
-							
-							alert.setTitle("Empty File");
-							alert.setHeaderText(null);
-							alert.setContentText("Can't Save, It's an Empty File");
-							alert.showAndWait();
-						}
-						else {
-												
-							FileChooser fileChooser = new FileChooser();
-							
-							FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("txt files", "*.txt");
-						
-							fileChooser.getExtensionFilters().add(extension);
-							
-							File saveFile = fileChooser.showSaveDialog(primaryStage);
-							
-							saveFileLocation = saveFile.getPath();
-							
-							try {
-								
-								if(saveFile != null) {
-																	
-										PrintWriter writeFile = new PrintWriter(saveFile);
-										
-										writeFile.println(textArea.getText());
-									
-										writeFile.close();
-								}
-								
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
-					}
-					else {
-						
-						File file = new File(saveFileLocation);
-						
-						try {
-							
-							if(file != null) {
-																
-									PrintWriter writeFile = new PrintWriter(file);
-									
-									writeFile.println(textArea.getText());
-								
-									writeFile.close();
-							}
-							
-						} catch (IOException e) {
-							e.printStackTrace();
-						}						
-					}
-				}
-				
-				// --- Ends
-				
-				// -> Default Line Count
-				
-				// --- Starts
-				
-				String lineString = textArea.getText();
-				
-				String [] lineStringArray = lineString.trim().split("[\n|\r]");
-				
-				int lineCount = lineStringArray.length;
-				
-				lineLabel.setText("Lines: " + lineCount);
-				
-				// --- Ends
-				
-				// -> Default Word Count
-				
-				// --- Starts
-				
-				String wordString = textArea.getText();
-				
-				String [] wordStringArray = wordString.trim().split("\\s+");
-				
-				int wordCount = wordStringArray.length;
-				
-				wordLabel.setText("Words: " + wordCount);
+				textArea.cut();
 			}
 		});
 		
+		// --- Ends
+		
+		// -> Copy Text File
+		
+		// --- Starts
+		
+		copyMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+				
+				textArea.copy();
+			}
+		});
+		
+		// --- Ends
+		
+		// -> Paste Text File
+		
+		// --- Starts
+		
+		pasteMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+				
+				textArea.paste();
+			}
+		});
+		
+		// --- Ends
+		
+		// -> Delete Text File
+		
+		// --- Starts
+		
+		deleteMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+				
+				textArea.replaceSelection("");
+			}
+		});
+		
+		// --- Ends
+		
+		selectAllMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+				
+				if(textArea.getText().equals("") || textArea.getText().equals(null)) {
+					
+					Alert alert = new Alert(AlertType.ERROR);
+					
+					alert.setTitle("Empty File");
+					alert.setHeaderText(null);
+					alert.setContentText("Can't Select, Empty File");
+					alert.showAndWait();
+				}
+				else {
+					
+					textArea.selectAll();
+				}
+			}
+		});
 		
 		// ** View MenuItem Event Handling
 		
@@ -620,12 +661,15 @@ public class NotePad extends Application {
 			public void handle(ActionEvent event) {
 				
 				TextArea aboutTextArea = new TextArea(
-						" \tWelcome to JavaFX NotePade v0.1\n" 
-						+ " \t   Author: Anim-101\n"
-						+ " \t   Version: 0.1\n"
+						"\t\t\t\t\tWelcome to JavaFX NotePade v0.1\n" 
+					 + "\t\t\t\t\t\t   	  Author: Anim-101\n"
+					 + "\t\t\t\t\t\t  	  Version: 0.1\n"
+					 + "\t\t\t\t\t\t       Language: Java\n"
+					 + "\t\t\t\t\t\t       Technology: JavaFX\n"
+					 + "\t   View Source Code: https://github.com/Anim-101/Javapps/tree/master/NotePad"
 						);
 				
-				aboutTextArea.setStyle("-fx-background-color: wheat; -fx-text-fill: black; -fx-font-size: 16px; -fx-font-weight: bold");
+				aboutTextArea.setStyle("-fx-background-color: white; -fx-text-fill: blue; -fx-font-size: 16px; -fx-font-weight: bold");
 				aboutTextArea.setDisable(true);
 				
 				ScrollPane aboutTextAreaScrollPane = new ScrollPane(aboutTextArea);
@@ -637,7 +681,7 @@ public class NotePad extends Application {
 				
 				aboutBorderPane.setCenter(aboutTextAreaScrollPane);
 				
-				Scene aboutScene = new Scene(aboutBorderPane, 400, 400);
+				Scene aboutScene = new Scene(aboutBorderPane, 700, 150);
 				
 				Stage aboutStage = new Stage();
 				
@@ -645,6 +689,311 @@ public class NotePad extends Application {
 				aboutStage.setTitle("About");
 				aboutStage.setResizable(false);
 				aboutStage.show();
+			}
+		});
+		
+		// --- Ends
+		
+		// ** Default Event Handling
+		
+		KeyCombination keyCombinationCtrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+		
+		KeyCombination keyCombinationCtrlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
+		
+		KeyCombination keyCombinationCtrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
+		
+		KeyCombination keyCombinationCtrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN);
+		
+		KeyCombination keyCombinationCtrlV = new KeyCodeCombination(KeyCode.V, KeyCombination.SHORTCUT_DOWN);
+		
+		KeyCombination keyCombinationCtrlX = new KeyCodeCombination(KeyCode.X, KeyCombination.SHORTCUT_DOWN);
+		
+		KeyCombination keyCombinationCtrlA = new KeyCodeCombination(KeyCode.A, KeyCombination.SHORTCUT_DOWN);
+		
+		textArea.setOnKeyPressed(new EventHandler<KeyEvent> () {
+			
+			public void handle(KeyEvent event) {
+				
+				// -> CTRL + Z = Shortcut Key to Undo Text
+				
+				// --- Starts
+				
+				if(keyCombinationCtrlZ.match(event)) {
+					
+					if((textArea.getText().equals("") || textArea.getText().equals(null)) && toggleAlertKey == 0 ) {
+						
+						Alert alert = new Alert(AlertType.ERROR);
+						
+						alert.setTitle("Empty File");
+						alert.setHeaderText(null);
+						alert.setContentText("Can't Undo, It's an Empty File");
+						alert.showAndWait();
+					}
+					else {
+
+						textArea.undo();
+						
+						toggleAlertKey = 1;
+					}
+				}
+				
+				// --- Ends
+				
+				// -> CTRL + Y = Shortcut Key to Redo Text
+				
+				// --- Starts
+				
+				if(keyCombinationCtrlY.match(event)) {
+					
+					if((textArea.getText().equals("") || textArea.getText().equals(null)) && toggleAlertKey == 0) {
+						
+						Alert alert = new Alert(AlertType.ERROR);
+						
+						alert.setTitle("Empty File");
+						alert.setHeaderText(null);
+						alert.setContentText("Can't Redo, It's an Empty File");
+						alert.showAndWait();
+					}
+					else {
+
+						textArea.redo();
+						
+						toggleAlertKey = 1;
+					}
+				}
+				
+				// --- Ends
+				
+				// -> CTRL + S = Shortcut Key to Save Text
+				
+				// --- Starts
+				
+				if(keyCombinationCtrlS.match(event)) {
+					
+					if(saveFileLocation == "") {
+						
+						if((textArea.getText().equals("") || textArea.getText().equals(null)) && toggleAlertKey == 0) {
+							
+							Alert alert = new Alert(AlertType.ERROR);
+							
+							alert.setTitle("Empty File");
+							alert.setHeaderText(null);
+							alert.setContentText("Can't Save, It's an Empty File");
+							alert.showAndWait();
+						}
+						else {
+												
+							FileChooser fileChooser = new FileChooser();
+							
+							FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("txt files", "*.txt");
+						
+							fileChooser.getExtensionFilters().add(extension);
+							
+							File saveFile = fileChooser.showSaveDialog(primaryStage);
+							
+							saveFileLocation = saveFile.getPath();
+							
+							toggleAlertKey = 1;
+							
+							try {
+								
+								if(saveFile != null) {
+																	
+										PrintWriter writeFile = new PrintWriter(saveFile);
+										
+										writeFile.println(textArea.getText());
+									
+										writeFile.close();
+								}
+								
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+					else {
+						
+						File file = new File(saveFileLocation);
+						
+						try {
+							
+							if(file != null) {
+																
+									PrintWriter writeFile = new PrintWriter(file);
+									
+									writeFile.println(textArea.getText());
+								
+									writeFile.close();
+							}
+							
+						} catch (IOException e) {
+							e.printStackTrace();
+						}						
+					}
+				}
+				
+				// --- Ends
+				
+				// -> Ctrl + C = Shortcut Key to Copy Text
+				
+				// --- Starts
+				
+				if(keyCombinationCtrlC.match(event)) {
+					
+					if(textArea.getText().equals("") || textArea.getText().equals(null)) {
+						
+						Alert alert = new Alert(AlertType.ERROR);
+						
+						alert.setTitle("Empty File");
+						alert.setHeaderText(null);
+						alert.setContentText("Can't Copy, It's an Empty File");
+						alert.showAndWait();
+					}
+					else {
+
+						textArea.cut();
+						
+						toggleAlertKey = 1;
+					}
+				}
+				
+				// --- Ends
+				
+				// -> Ctrl + V = Shortcut Key to Paste Text
+				
+				// Starts
+				
+				if(keyCombinationCtrlV.match(event)) {
+					
+					if((textArea.getText().equals("") || textArea.getText().equals(null)) && toggleAlertKey == 0) {
+						
+						Alert alert = new Alert(AlertType.ERROR);
+						
+						alert.setTitle("Empty File");
+						alert.setHeaderText(null);
+						alert.setContentText("Can't Paste, It's an Empty File");
+						alert.showAndWait();
+					}
+					else {
+
+						textArea.paste();
+						
+						toggleAlertKey = 1;
+					}
+				}
+				
+				// --- Ends
+				
+				// -> Ctrl + X = Shortcut Key to Cut Text
+				
+				// --- Starts
+				
+				if(keyCombinationCtrlX.match(event)) {
+					
+					if((textArea.getText().equals("") || textArea.getText().equals(null)) && toggleAlertKey == 0) {
+						
+						Alert alert = new Alert(AlertType.ERROR);
+						
+						alert.setTitle("Empty File");
+						alert.setHeaderText(null);
+						alert.setContentText("Can't Cut, It's an Empty File");
+						alert.showAndWait();
+					}
+					else {
+
+						textArea.redo();
+						
+						toggleAlertKey = 1;
+					}
+				}
+				
+				// --- Ends
+				
+				// -> Ctrl + A = Shortcut Key to Select All
+				
+				// --- Starts
+				
+				if(keyCombinationCtrlA.match(event)) {
+					
+					if((textArea.getText().equals("") || textArea.getText().equals(null)) && toggleAlertKey == 0) {
+						
+						Alert alert = new Alert(AlertType.ERROR);
+						
+						alert.setTitle("Empty File");
+						alert.setHeaderText(null);
+						alert.setContentText("Can't Select, It's an Empty File");
+						alert.showAndWait();
+					}
+					else {
+
+						textArea.selectAll();
+						
+						toggleAlertKey = 1;
+					}
+				}
+				
+				// --- Ends
+				
+				// -> Default Line Count
+				
+				// --- Starts
+				
+				String lineString = textArea.getText();
+				
+				String [] lineStringArray = lineString.trim().split("[\n|\r]");
+				
+				int lineCount = lineStringArray.length;
+				
+				lineLabel.setText("Lines: " + lineCount);
+				
+				// --- Ends
+				
+				// -> Default Word Count
+				
+				// --- Starts
+				
+				String wordString = textArea.getText();
+				
+				String [] wordStringArray = wordString.trim().split("\\s+");
+				
+				int wordCount = wordStringArray.length;
+				
+				wordLabel.setText("Words: " + wordCount);
+			}
+		});
+		
+		// Ends
+		
+		// -> On Exit Request Save or Don't Save or Cancel
+		
+		// --- Starts
+		
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent> () {
+			
+			public void handle(WindowEvent event) {
+				
+				/*Button saveButton = new Button("Save");
+				
+				Button dontSaveButton = new Button("Don't");
+				
+				Button closeButton = new Button("Close");
+				
+				FlowPane flowPane = new FlowPane();
+				
+				flowPane.setHgap(25);
+				
+				flowPane.getChildren().addAll(saveButton, dontSaveButton, closeButton);
+				
+				flowPane.setMargin(saveButton, new Insets(20, 0, 20, 20));
+				
+				Scene closeScene = new Scene(flowPane, 210, 50);
+				
+				Stage closeStage = new Stage();
+				
+				closeStage.setScene(closeScene);
+				closeStage.setTitle("Exit Warning");
+				closeStage.setResizable(false);
+				closeStage.show();*/
 			}
 		});
 		
@@ -667,6 +1016,11 @@ public class NotePad extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("NotePad V0.1");
 		primaryStage.show();
+	}
+	
+	public void closeStage() {
+		
+		System.exit(0);
 	}
 	
 	public static void main(String [] args) {
