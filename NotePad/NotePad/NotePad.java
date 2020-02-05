@@ -2,6 +2,7 @@ package application;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -16,7 +17,6 @@ import javafx.event.EventHandler;
 import javafx.stage.FileChooser;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCombination;
@@ -32,6 +32,8 @@ import java.io.IOException;
 public class NotePad extends Application {
 	
 	String openFileLocation = "", saveFileLocation = "";
+	
+	int toggleNumber = 0;
 	
 	public void start(Stage primaryStage) throws Exception {
 		
@@ -71,16 +73,17 @@ public class NotePad extends Application {
 		// View Menu Items
 		
 		MenuItem lineMenuItem = new MenuItem("Line");
-		MenuItem statusBarMenuItem = new MenuItem("Status Bar");
+		MenuItem wordMenuItem = new MenuItem("Word");
+		MenuItem statusMenuItem = new MenuItem("Status");
 		
-		viewMenu.getItems().addAll(lineMenuItem, statusBarMenuItem);
+		viewMenu.getItems().addAll(lineMenuItem, wordMenuItem, statusMenuItem);
 		
 		// Format Menu Items
 		
-		MenuItem wordWrapMenuItem = new MenuItem("Word Wrap");
+		MenuItem wrapMenuItem = new MenuItem("Wrap");
 		MenuItem fontMenuItem = new MenuItem("Font");
 		
-		formatMenu.getItems().addAll(wordWrapMenuItem, fontMenuItem);
+		formatMenu.getItems().addAll(wrapMenuItem, fontMenuItem);
 		
 		// Help Menu Items
 		
@@ -100,28 +103,13 @@ public class NotePad extends Application {
 		scrollPane.setFitToHeight(true);
 		scrollPane.setFitToWidth(true);
 		
-		
-		// Line Alignment Area
+		// Line - Word Alignment Area
 		
 		HBox hbox = new HBox();
 		
-		Label welcomeLabel = new Label("Welcome");
+		Label lineLabel = new Label();
 		
-		hbox.getChildren().add(welcomeLabel);
-		
-		// Sub Pane
-		
-		BorderPane borderPane = new BorderPane();
-		
-		borderPane.setTop(notePadMenuBar);		
-		borderPane.setCenter(scrollPane);
-		borderPane.setBottom(hbox);
-		
-		Scene scene = new Scene(borderPane, 1080, 720);
-		
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("NotePad V0.1");
-		primaryStage.show();
+		Label wordLabel = new Label();
 		
 		// * Event Handling
 		
@@ -201,7 +189,7 @@ public class NotePad extends Application {
 					
 					if(textArea.getText().equals("") || textArea.getText().equals(null)) {
 						
-						Alert alert = new Alert(AlertType.INFORMATION);
+						Alert alert = new Alert(AlertType.ERROR);
 						
 						alert.setTitle("Empty File");
 						alert.setHeaderText(null);
@@ -271,7 +259,7 @@ public class NotePad extends Application {
 				
 				if(textArea.getText().equals("") || textArea.getText().equals(null)) {
 					
-					Alert alert = new Alert(AlertType.INFORMATION);
+					Alert alert = new Alert(AlertType.ERROR);
 					
 					alert.setTitle("Empty File");
 					alert.setHeaderText(null);
@@ -380,7 +368,7 @@ public class NotePad extends Application {
 						
 						if(textArea.getText().equals("") || textArea.getText().equals(null)) {
 							
-							Alert alert = new Alert(AlertType.INFORMATION);
+							Alert alert = new Alert(AlertType.ERROR);
 							
 							alert.setTitle("Empty File");
 							alert.setHeaderText(null);
@@ -437,9 +425,248 @@ public class NotePad extends Application {
 				}
 				
 				// --- Ends
+				
+				// -> Default Line Count
+				
+				// --- Starts
+				
+				String lineString = textArea.getText();
+				
+				String [] lineStringArray = lineString.trim().split("[\n|\r]");
+				
+				int lineCount = lineStringArray.length;
+				
+				lineLabel.setText("Lines: " + lineCount);
+				
+				// --- Ends
+				
+				// -> Default Word Count
+				
+				// --- Starts
+				
+				String wordString = textArea.getText();
+				
+				String [] wordStringArray = wordString.trim().split("\\s+");
+				
+				int wordCount = wordStringArray.length;
+				
+				wordLabel.setText("Words: " + wordCount);
 			}
 		});
 		
+		
+		// ** View MenuItem Event Handling
+		
+		// -> Show Line Count
+		
+		// --- Starts
+		
+		lineMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+				
+				String string = textArea.getText();
+				
+				String [] stringArray = string.trim().split("[\n|\r]");
+				
+				int lineCount = stringArray.length;
+				
+				Alert alert = new Alert(AlertType.INFORMATION);
+				
+				alert.setTitle("Lines");
+				alert.setHeaderText(null);
+				alert.setContentText("Lines Count: " + lineCount);
+				alert.showAndWait();
+			}
+		});
+		
+		// --- Ends
+		
+		// -> Show Word Count
+		
+		// --- Starts
+		
+		wordMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+				
+				String string = textArea.getText();
+				
+				String [] stringArray = string.trim().split("\\s+");
+				
+				int wordCount = stringArray.length;
+				
+				Alert alert = new Alert(AlertType.INFORMATION);
+				
+				alert.setTitle("Words");
+				alert.setHeaderText(null);
+				alert.setContentText("Words Count: " + wordCount);
+				alert.showAndWait();
+			}
+		});
+		
+		// --- Ends
+		
+		// -> Show Status
+		
+		// --- Starts
+		
+		statusMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+				
+				Alert alert = new Alert(AlertType.INFORMATION);
+				
+				alert.setTitle("Status");
+				alert.setHeaderText(null);
+				
+				if(saveFileLocation.equals("")) {
+					
+					alert.setContentText("Not Saved");
+				}
+				
+				else {
+					
+					alert.setContentText("Saved");
+				}
+				
+				alert.showAndWait();
+			}
+		});
+		
+		// --- Ends
+		
+		// ** Format MenuItem Event Handling
+		
+		// -> Wrap Text
+		
+		// --- Starts
+				
+		wrapMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+								
+				if(toggleNumber == 0) {
+					
+					textArea.setWrapText(false);
+					
+					toggleNumber = 1;
+				}
+				else {
+					textArea.setWrapText(true);
+					
+					toggleNumber = 0;
+				}
+			}
+		});
+		
+		// --- Ends
+		
+		// -> Text Fonts
+		
+		// --- Starts
+		
+		fontMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+				
+			}
+		});
+		
+		// --- Ends
+		
+		// ** Help MenuItem Event Handling
+		
+		// -> Help
+		
+		// --- Starts
+		
+		helpMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+				
+				TextArea helpTextArea = new TextArea();
+				
+				helpTextArea.setDisable(true);
+				
+				ScrollPane helpScrollPane = new ScrollPane(helpTextArea);
+				
+				helpScrollPane.setFitToHeight(true);
+				helpScrollPane.setFitToWidth(true);
+				
+				BorderPane helpBorderPane = new BorderPane();
+				
+				helpBorderPane.setCenter(helpScrollPane);
+				
+				Scene helpScene = new Scene(helpBorderPane, 600, 400);
+				
+				Stage helpStage = new Stage();
+				
+				helpStage.setScene(helpScene);
+				helpStage.setTitle("Help");
+				helpStage.setResizable(false);
+				helpStage.show();				
+			}
+		});
+		
+		// --- Ends
+		
+		// -> About
+		
+		// --- Starts
+		
+		aboutMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+				
+				TextArea aboutTextArea = new TextArea(
+						" \tWelcome to JavaFX NotePade v0.1\n" 
+						+ " \t   Author: Anim-101\n"
+						+ " \t   Version: 0.1\n"
+						);
+				
+				aboutTextArea.setStyle("-fx-background-color: wheat; -fx-text-fill: black; -fx-font-size: 16px; -fx-font-weight: bold");
+				aboutTextArea.setDisable(true);
+				
+				ScrollPane aboutTextAreaScrollPane = new ScrollPane(aboutTextArea);
+				
+				aboutTextAreaScrollPane.setFitToHeight(true);
+				aboutTextAreaScrollPane.setFitToWidth(true);
+				
+				BorderPane aboutBorderPane = new BorderPane();
+				
+				aboutBorderPane.setCenter(aboutTextAreaScrollPane);
+				
+				Scene aboutScene = new Scene(aboutBorderPane, 400, 400);
+				
+				Stage aboutStage = new Stage();
+				
+				aboutStage.setScene(aboutScene);
+				aboutStage.setTitle("About");
+				aboutStage.setResizable(false);
+				aboutStage.show();
+			}
+		});
+		
+		// --- Ends
+		
+		// Sub Pane
+		
+		hbox.setSpacing(20);
+		
+		hbox.getChildren().addAll(lineLabel, wordLabel);
+		
+		BorderPane borderPane = new BorderPane();
+		
+		borderPane.setTop(notePadMenuBar);		
+		borderPane.setCenter(scrollPane);
+		borderPane.setBottom(hbox);
+		
+		Scene scene = new Scene(borderPane, 1080, 720);
+		
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("NotePad V0.1");
+		primaryStage.show();
 	}
 	
 	public static void main(String [] args) {
