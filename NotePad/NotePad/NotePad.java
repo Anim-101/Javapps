@@ -16,6 +16,11 @@ import javafx.event.EventHandler;
 import javafx.stage.FileChooser;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyCodeCombination;
 
 import java.util.Scanner;
 import java.io.File;
@@ -118,9 +123,13 @@ public class NotePad extends Application {
 		primaryStage.setTitle("NotePad V0.1");
 		primaryStage.show();
 		
-		// Event Handling
+		// * Event Handling
 		
-		// File MenuItem Event Handling
+		// ** File MenuItem Event Handling
+		
+		// -> New Text File
+		
+		// --- Starts
 		
 		newMenuItem.setOnAction(new EventHandler<ActionEvent> () {
 			
@@ -131,6 +140,12 @@ public class NotePad extends Application {
 				textArea.setText("");
 			}
 		});
+		
+		// --- Ends
+		
+		// -> Open Text File
+		
+		// --- Starts
 		
 		openMenuItem.setOnAction(new EventHandler<ActionEvent> () {
 		
@@ -161,6 +176,8 @@ public class NotePad extends Application {
 					
 					textArea.setText(text);
 					
+					saveFileLocation = openFile.getPath();
+					
 					scanner.close();
 					
 				} catch (FileNotFoundException e) {
@@ -169,6 +186,12 @@ public class NotePad extends Application {
 				}
 			}
 		});
+		
+		// --- Ends
+		
+		// -> Save Text File
+		
+		// --- Starts
 		
 		saveMenuItem.setOnAction(new EventHandler<ActionEvent> () {
 			
@@ -204,7 +227,7 @@ public class NotePad extends Application {
 									PrintWriter writeFile = new PrintWriter(saveFile);
 									
 									writeFile.println(textArea.getText());
-								
+									
 									writeFile.close();
 							}
 							
@@ -235,6 +258,12 @@ public class NotePad extends Application {
 				}
 			}
 		});
+		
+		// --- Ends
+		
+		// -> Save As Text File
+		
+		// --- Starts
 		
 		saveAsMenuItem.setOnAction(new EventHandler<ActionEvent> () {
 			
@@ -281,9 +310,136 @@ public class NotePad extends Application {
 			}
 		});
 		
+		// --- Ends
+		
+		// -> Exit NodePad
+		
+		// --- Starts
+		
 		exitMenuItem.setOnAction(e-> System.exit(0));
 		
-		// Edit MenuItem Event Handling
+		// --- Ends
+		
+		// ** Edit MenuItem Event Handling
+		
+		// -> Undo Text File
+		
+		// --- Starts
+		
+		undoMenuItem.setOnAction(new EventHandler<ActionEvent> () {
+			
+			public void handle(ActionEvent event) {
+				
+					textArea.undo();
+			}
+		});
+		
+		// --- Ends
+		
+		// ** Default Event Handling
+		
+		KeyCombination keyCombinationCtrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+		
+		KeyCombination keyCombinationCtrlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
+		
+		KeyCombination keyCombinationCtrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
+		
+		textArea.setOnKeyPressed(new EventHandler<KeyEvent> () {
+			
+			public void handle(KeyEvent event) {
+				
+				// -> CTRL + Z = Shortcut Key to Undo Text
+				
+				// --- Starts
+				
+				if(keyCombinationCtrlZ.match(event)) {
+					
+					textArea.undo();
+				}
+				
+				// --- Ends
+				
+				// -> CTRL + Y = Shortcut Key to Redo Text
+				
+				// --- Starts
+				
+				if(keyCombinationCtrlY.match(event)) {
+									
+					textArea.redo();
+				}
+				
+				// --- Ends
+				
+				// -> CTRL + S = Shortcut Key to Save Text
+				
+				// --- Starts
+				
+				if(keyCombinationCtrlS.match(event)) {
+					
+					if(saveFileLocation == "") {
+						
+						if(textArea.getText().equals("") || textArea.getText().equals(null)) {
+							
+							Alert alert = new Alert(AlertType.INFORMATION);
+							
+							alert.setTitle("Empty File");
+							alert.setHeaderText(null);
+							alert.setContentText("Can't Save, It's an Empty File");
+							alert.showAndWait();
+						}
+						else {
+												
+							FileChooser fileChooser = new FileChooser();
+							
+							FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("txt files", "*.txt");
+						
+							fileChooser.getExtensionFilters().add(extension);
+							
+							File saveFile = fileChooser.showSaveDialog(primaryStage);
+							
+							saveFileLocation = saveFile.getPath();
+							
+							try {
+								
+								if(saveFile != null) {
+																	
+										PrintWriter writeFile = new PrintWriter(saveFile);
+										
+										writeFile.println(textArea.getText());
+									
+										writeFile.close();
+								}
+								
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+					else {
+						
+						File file = new File(saveFileLocation);
+						
+						try {
+							
+							if(file != null) {
+																
+									PrintWriter writeFile = new PrintWriter(file);
+									
+									writeFile.println(textArea.getText());
+								
+									writeFile.close();
+							}
+							
+						} catch (IOException e) {
+							e.printStackTrace();
+						}						
+					}
+				}
+				
+				// --- Ends
+			}
+		});
+		
 	}
 	
 	public static void main(String [] args) {
