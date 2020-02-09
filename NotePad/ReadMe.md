@@ -26,10 +26,10 @@ Help - Help (Shows manual to control texts), About (Shows information of author)
 
 ### Shortcuts
 
-CTRL + A = Selects All.
-CTRL + C = Copies Selected.
-CTRL + X = Cuts Selected.
-CTRL + Y = Redos Selected Buffer.
-CTRL + Z = Undos Selected Buffer.
-CTRL + P = Pastes Selected.
+*	CTRL + A = Selects All.
+*	CTRL + C = Copies Selected.
+*	CTRL + X = Cuts Selected.
+*	CTRL + Y = Redos Selected Buffer.
+*	CTRL + Z = Undos Selected Buffer.
+*	CTRL + P = Pastes Selected.
 
