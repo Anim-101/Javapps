@@ -36,4 +36,4 @@ Help - Help (Shows manual to control texts), About (Shows information of author)
 
 ## UI
 
-![alt-text](https://github.com/Anim-101/Javapps/NotePad/UI Image/Notepadv0.1 UI.PNG' "Notepadv0.1") 
+![alt-text]("https://github.com/Anim-101/Javapps/blob/master/NotePad/UI%20Image/Notepadv0.1%20UI.PNG" "Notepadv0.1") 
