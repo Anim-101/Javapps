@@ -8,6 +8,9 @@ This project is a fun project to create a notepad type of desktop application wi
 
 Executable file is already attached here. If anyone doesn't want to build from scratch then exe file is available in executable directory. If anyone wants to build this project with compilers than JavaFX library is needed to attached.
 
+* Code: [NotePad.java](https://github.com/Anim-101/Javapps/blob/master/NotePad/NotePad/NotePad.java)
+* Exe: [NotePadv0.1.exe](https://github.com/Anim-101/Javapps/blob/master/NotePad/Executable/NotePadv0.1.exe)
+
 ## Requirements
 
 Minimum JRE 1.4.1 is required to run the executable exe file.
