@@ -33,3 +33,7 @@ Help - Help (Shows manual to control texts), About (Shows information of author)
 *	CTRL + Z = Undos Selected Buffer.
 *	CTRL + P = Pastes Selected.
 
+
+## UI
+
+![alt-text](https://github.com/Anim-101/Javapps/NotePad/UI Image/Notepadv0.1 UI.PNG' "Notepadv0.1") 
