@@ -34,7 +34,7 @@ Help - Help (Shows manual to control texts), About (Shows information of author)
 *	CTRL + X = Cuts Selected.
 *	CTRL + Y = Redos Selected Buffer.
 *	CTRL + Z = Undos Selected Buffer.
-*	CTRL + P = Pastes Selected.
+*	CTRL + V = Pastes Selected.
 
 
 ## UI
