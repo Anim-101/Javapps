@@ -63,7 +63,6 @@ public class GamePanel extends JPanel{
 		initializeLayout();
 		
 		initializeGame();
-		
 	}
 	
 	private void initializeVariables() {
