@@ -15,8 +15,7 @@ public class GameMainFrame extends JFrame {
 	
 	public void initializeLayout() {
 		
-		add(new GamePanel());
-		
+		add(new GamePanel());	
 		
 		setTitle(Constants.TITLE);
 		
@@ -32,6 +31,4 @@ public class GameMainFrame extends JFrame {
 		
 		setVisible(true);
 	}
-	
-
 }
