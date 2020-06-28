@@ -29,9 +29,7 @@ public class Laser extends Sprite {
 		
 		setX(x + Constants.SPACESHIPWIDTH / 2);
 		
-		setY(y);
-		
-		
+		setY(y);		
 	}
 
 	@Override
@@ -43,7 +41,5 @@ public class Laser extends Sprite {
 			
 			this.die();
 		}
-		
 	}
-
 }
