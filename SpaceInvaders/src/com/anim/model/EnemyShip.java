@@ -23,7 +23,6 @@ public class EnemyShip extends Sprite {
 		ImageIcon imageIcon = Images.createImage(Image.UFO);
 		
 		setImage(imageIcon.getImage());
-		
 	}
 	
 	public void setVisible(boolean visible) {
@@ -43,7 +42,6 @@ public class EnemyShip extends Sprite {
 
 	@Override
 	public void move() {
-		
 		
 	}
 }
