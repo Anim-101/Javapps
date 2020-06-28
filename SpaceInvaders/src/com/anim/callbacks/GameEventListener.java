@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 
 import com.anim.ui.GamePanel;
 
-
 public class GameEventListener extends KeyAdapter {
 	
 	private GamePanel gamePanel;
@@ -19,7 +18,6 @@ public class GameEventListener extends KeyAdapter {
 	public void keyReleased(KeyEvent event) {
 		
 		this.gamePanel.keyReleased(event);
-		
 	}
 	
 	@Override
