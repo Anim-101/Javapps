@@ -47,14 +47,12 @@ public class SpaceShip extends Sprite {
 		if(x >= Constants.BOARDWIDTH - 2 * Constants.SPACESHIPWIDTH) {
 			
 			x = Constants.BOARDWIDTH - 2 * Constants.SPACESHIPWIDTH;
-		}
-			
+		}	
 	}
 
 	public void keyPressed(KeyEvent event) {
 		
 		int key = event.getKeyCode();
-		
 		
 		// SpaceShip Translating Left Side of Screen
 		
@@ -89,5 +87,4 @@ public class SpaceShip extends Sprite {
 			dx = 0;
 		}
 	}
-
 }
