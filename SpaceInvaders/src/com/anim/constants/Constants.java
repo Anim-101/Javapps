@@ -22,7 +22,6 @@ public class Constants {
 	
 	public static final String GAMEOVER = "GAME OVER";
 	
-	
 	// SpaceShips
 	
 	public static final int SPACESHIPWIDTH = 34;
@@ -74,8 +73,4 @@ public class Constants {
 	public static final String BACKGROUNDIMAGE = "Images/background.jpg";
 	
 	public static final String SPACESHIPIMAGE = "Images/spaceship.png";
-	
-	
-
 }
-
