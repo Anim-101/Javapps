@@ -7,7 +7,6 @@ import com.anim.image.Image;
 import com.anim.image.Images;
 
 public class Bomb extends Sprite {
-
 	
 	public Bomb(int x, int y) {
 		
@@ -23,7 +22,6 @@ public class Bomb extends Sprite {
 		ImageIcon imageIcon = Images.createImage(Image.BOMB);
 		
 		setImage(imageIcon.getImage());
-		
 	}
 
 	@Override
@@ -36,5 +34,4 @@ public class Bomb extends Sprite {
 			die();
 		}
 	}
-
 }
